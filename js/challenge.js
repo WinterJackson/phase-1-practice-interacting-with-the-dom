@@ -6,12 +6,13 @@ window.addEventListener("load", function() {
     const plusButton = document.getElementById("plus");
     const heartButton = document.getElementById("heart");
     const pauseButton = document.getElementById("pause");
+    const restartButton = document.getElementById("restart"); // Add restart button
     const likesList = document.getElementById("likes-list");
   
     let isPaused = false;
     let intervalId;
   
-    const likes = {}; // Declare the likes object
+    let likes = {};
   
     minusButton.addEventListener("click", function() {
       counterValue--;
@@ -51,6 +52,23 @@ window.addEventListener("load", function() {
       isPaused = !isPaused;
     });
   
+    restartButton.addEventListener("click", function() {
+      counterValue = 0;
+      counterElement.innerText = counterValue;
+      likes = {}; // Reset the likes
+      updateLikesList();
+      enableButtons();
+      pauseButton.innerText = "pause";
+      isPaused = false;
+      clearInterval(intervalId);
+      intervalId = setInterval(function() {
+        if (!isPaused) {
+          counterValue++;
+          counterElement.innerText = counterValue;
+        }
+      }, 1000);
+    });
+  
     function updateLikesList() {
       likesList.innerHTML = "";
       for (const key in likes) {
@@ -64,12 +82,14 @@ window.addEventListener("load", function() {
       minusButton.disabled = true;
       plusButton.disabled = true;
       heartButton.disabled = true;
+      restartButton.disabled = true; 
     }
   
     function enableButtons() {
       minusButton.disabled = false;
       plusButton.disabled = false;
       heartButton.disabled = false;
+      restartButton.disabled = false; 
     }
   
     intervalId = setInterval(function() {
