@@ -6,12 +6,14 @@ window.addEventListener("load", function() {
     const plusButton = document.getElementById("plus");
     const heartButton = document.getElementById("heart");
     const pauseButton = document.getElementById("pause");
-    const restartButton = document.getElementById("restart"); // Add restart button
+    const restartButton = document.getElementById("restart");
     const likesList = document.getElementById("likes-list");
+    const commentForm = document.getElementById("comment-form");
+    const commentInput = document.getElementById("comment-input");
+    const commentsContainer = document.getElementById("list");
   
     let isPaused = false;
     let intervalId;
-  
     let likes = {};
   
     minusButton.addEventListener("click", function() {
@@ -55,7 +57,7 @@ window.addEventListener("load", function() {
     restartButton.addEventListener("click", function() {
       counterValue = 0;
       counterElement.innerText = counterValue;
-      likes = {}; // Reset the likes
+      likes = {};
       updateLikesList();
       enableButtons();
       pauseButton.innerText = "pause";
@@ -67,6 +69,17 @@ window.addEventListener("load", function() {
           counterElement.innerText = counterValue;
         }
       }, 1000);
+    });
+  
+    commentForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const comment = commentInput.value;
+      if (comment.trim() !== "") {
+        const commentElement = document.createElement("p");
+        commentElement.innerText = comment;
+        commentsContainer.appendChild(commentElement);
+        commentInput.value = "";
+      }
     });
   
     function updateLikesList() {
@@ -82,14 +95,14 @@ window.addEventListener("load", function() {
       minusButton.disabled = true;
       plusButton.disabled = true;
       heartButton.disabled = true;
-      restartButton.disabled = true; 
+      restartButton.disabled = true;
     }
   
     function enableButtons() {
       minusButton.disabled = false;
       plusButton.disabled = false;
       heartButton.disabled = false;
-      restartButton.disabled = false; 
+      restartButton.disabled = false;
     }
   
     intervalId = setInterval(function() {
